@@ -83,8 +83,3 @@ yarn.lock
 # from last assignment
 node_modules/
 .DS_Store/
-
-# from README
-index.js
-package.json
-./dist/team-profile.html

@@ -8,7 +8,7 @@ USE haroldsclownfactory_db;
 
 CREATE TABLE department (
   id INT PRIMARY KEY AUTO_INCREMENT, 
-  name VARCHAR(30) NOT NULL,
+  name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role ( -- for some reason will not allow me to write 'role'
@@ -18,7 +18,7 @@ CREATE TABLE role ( -- for some reason will not allow me to write 'role'
   salary DECIMAL(6, 2) NOT NULL,
   department_id INT,
   FOREIGN KEY (department_id)
-  REFERENCES deparment(id)
+  REFERENCES department(id)
 );
 
 CREATE TABLE employee (
@@ -28,7 +28,9 @@ CREATE TABLE employee (
   role_id INT,
   manager_id INT,
   FOREIGN KEY (role_id)
-  REFERENCES role(id)
+  REFERENCES role(id),
+  FOREIGN KEY (manager_id)
+  REFERENCES employee(id) -- employee can be another employees manager via the id
 );
 
 

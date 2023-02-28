@@ -1,6 +1,5 @@
-# Harold's Clown Factory Employee Tracker
+# Harold's Clown Factory Employee Tracker 🤡
 
-  
   
   ## Table of Contents
   
@@ -9,7 +8,7 @@
   - ii. [General Information](#general-information)
     - i. [Installation](#installation)
     - ii. [Usage](#usage)
-  - iii. [Screenshot](#screenshot-and-demo-video)
+  - iii. [Screenshot & Demo Video](#screenshot-and-demo-video)
   - iv. [Acknowledgements](#acknowledgements)
 
   ## Description

@@ -3,15 +3,12 @@ CREATE DATABASE haroldsclownfactory_db;
 
 USE haroldsclownfactory_db;
 
--- reordered tables to fix error happening with "chicken and egg problem" --
--- can't create one table if part of it depends on creating another table --
-
 CREATE TABLE department (
   id INT PRIMARY KEY AUTO_INCREMENT, 
   name VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE role ( -- for some reason will not allow me to write 'role'
+CREATE TABLE role (
  -- in auto increment must set it as primary key on same line -- 
   id INT PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(30) NOT NULL,
@@ -23,7 +20,7 @@ CREATE TABLE role ( -- for some reason will not allow me to write 'role'
 );
 
 CREATE TABLE employee (
-  id INT PRIMARY KEY AUTO_INCREMENT, -- i'm not sure if I need to make this into a primary key
+  id INT PRIMARY KEY AUTO_INCREMENT, 
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   role_id INT,

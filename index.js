@@ -1,4 +1,3 @@
-//folder structure
 //fix null
 //also make it so you can add manager id to that one part
 

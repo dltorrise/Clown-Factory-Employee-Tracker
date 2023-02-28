@@ -19,6 +19,7 @@ CREATE TABLE role ( -- for some reason will not allow me to write 'role'
   department_id INT,
   FOREIGN KEY (department_id)
   REFERENCES department(id)
+  ON DELETE SET NULL
 );
 
 CREATE TABLE employee (
@@ -28,9 +29,11 @@ CREATE TABLE employee (
   role_id INT,
   manager_id INT,
   FOREIGN KEY (role_id)
-  REFERENCES role(id),
+  REFERENCES role(id)
+  ON DELETE SET NULL,
   FOREIGN KEY (manager_id)
   REFERENCES employee(id) -- employee can be another employees manager via the id
+  ON DELETE SET NULL
 );
 
 

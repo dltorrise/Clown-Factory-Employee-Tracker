@@ -8,7 +8,7 @@
   - ii. [General Information](#general-information)
     - i. [Installation](#installation)
     - ii. [Usage](#usage)
-  - iii. [Screenshot & Demo Video](#screenshot-and-demo-video)
+  - iii. [Screenshot and Demo Video](#screenshot-and-demo-video)
   - iv. [Acknowledgements](#acknowledgements)
 
   ## Description

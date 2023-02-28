@@ -1,31 +1,14 @@
-// GIVEN a command-line application that accepts user input
-// WHEN I start the application
-// THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
-// WHEN I choose to view all departments
-// THEN I am presented with a formatted table showing department names and department ids
-// what does formatted mean??
-//WHEN I choose to view all roles
-// THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
-// WHEN I choose to view all employees
-
-// WHEN I choose to add a department
-// THEN I am prompted to enter the name of the department and that department is added to the database
-// WHEN I choose to add a role
-// THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
-// WHEN I choose to add an employee
-// THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-// WHEN I choose to update an employee role
-// THEN I am prompted to select an employee to update and their new role and this information is updated in the database
-
+//folder structure
+//fix null
+//also make it so you can add manager id to that one part
 
 //*IMPORTS*
 var inquirer = require('inquirer');
-//imports sql library
 const mysql = require('mysql2');
 const cTable = require('console.table');
 
 //*PROMPTS*
-//questions that enduser will get asked when first running the application
+// menu for users when they first begin application
 const firstQuestion = [
     {
         type: 'list',
@@ -35,6 +18,7 @@ const firstQuestion = [
     },
 ]
 
+// questions for user when they want to add departments
 const addDepartmentQuestions = [
     {
         type: 'input',
@@ -45,6 +29,7 @@ const addDepartmentQuestions = [
     },
 ]
 
+// questions for user when they want to add a role
 const addRoleQuestions = [
     {
         type: 'input',
@@ -62,7 +47,7 @@ const addRoleQuestions = [
     },
 ]
 
-
+// questions for user when they want to add an employee
 const addEmployeeQuestions = [
     {
         type: 'input',
@@ -80,21 +65,31 @@ const addEmployeeQuestions = [
     },
 ]
 
-
-
-
-
 //*VARIABLES AND FUNCTIONS*
 
-//initialized the main questions and creates an html file
+/*HELPER FUNCTIONS*/
+// functions to return tables so that they can be stored in arrays in other functions
+
+function employeeChoices() {
+    return db.promise().query("SELECT * from employee")
+}
+
+function departmentChoices() {
+    return db.promise().query("SELECT * from department")
+}
+
+function roleChoices() {
+    return db.promise().query("SELECT * from role")
+}
+
+/*PRIMARY FUNCTION*/
+//initialized the first question
 function init() {
     inquirer
         .prompt(firstQuestion)
         .then((answer) => {
 
-            console.log(answer)
-            //'View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee role'
-            //gives enduser option to add more team members or complete document
+            //console.log(answer)
             if (answer.menu === 'View all departments') {
                 viewDepartments()
             } else if (answer.menu === 'View all roles') {
@@ -131,53 +126,47 @@ const db = mysql.createConnection(
 );
 
 
-//calls initial prompts when index.js is entered into command line
+// calls initial prompts when index.js is entered into command line
 init()
 
+// function to view departments
 function viewDepartments() {
     db.query('SELECT * FROM department', function (err, results) {
-        //selecting from a specific table and console log what the results are
         console.table(results);
         init() //restarts prompt
     });
-
 }
 
+// function to view various roles
 function viewRoles() {
     db.query('SELECT * FROM role', function (err, results) {
-        //selecting from a specific table and console log what the results are
         console.table(results);
-        init() //restarts prompt
+        init() 
     });
-
 }
 
-//need to use a join here
-// THEN I am presented with a formatted table showing employee data, 
-//including employee ids, first names, last names, job titles, departments, 
-//salaries, and managers that the employees report to
+// uses a join statement to view information about all employees
 function viewEmployees() {
     db.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;", function (err, results) {
-        //selecting from a specific table and console log what the results are
         console.table(results);
         init()
     });
-
 }
-//not sure if I need a comma before values also
+
+// function to add a department
 function addDepartment() {
     inquirer
         .prompt(addDepartmentQuestions)
         .then((answer) => {
             db.query(`INSERT INTO department (id, name)
         VALUES (id, '${answer.departmentName}');`, function (err, results) {
-                //selecting from a specific table and console log what the results are
                 console.log(`Success! You added the ${answer.departmentName} department.`)
                 init()
             })
         })
 }
 
+// function to add a role
 function addRole() {
     inquirer
         .prompt(addRoleQuestions)
@@ -195,13 +184,10 @@ function addRole() {
                             choices: dChoices
                         },
                     ]).then((answer) => {
-                        console.log(answer) //department number
-                        console.log(roleTitle)
-                        console.log(roleSalary)
                         db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`, [roleTitle, roleSalary, answer.roleDepartment], function (err, results) {
-                            console.log(results);
+                            //console.log(results);
                             console.log(`Success! You added the ${roleTitle} role.`)
-                            //init()
+                            init()
                         })
                     })
             })
@@ -209,22 +195,7 @@ function addRole() {
         })
 }
 
-//need to figure out how to do this part
-//query roles
-//list all employees and that will populate manager id
-
-function employeeChoices() {
-    return db.promise().query("SELECT * from employee")
-}
-
-function departmentChoices() {
-    return db.promise().query("SELECT * from department")
-}
-
-function roleChoices() {
-    return db.promise().query("SELECT * from role")
-}
-
+// function to add an employee
 function addEmployee() {
     inquirer
         .prompt(addEmployeeQuestions)
@@ -242,21 +213,20 @@ function addEmployee() {
                             choices: rChoices
                         },
                     ]).then((answers) => {
-                        //if(answers.newRole)
-                        console.log(answers)
+                        //console.log(answers)
                         db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`, [firstName, lastName, answers.newRole, null], function (err, results) {
-                            //selecting from a specific table and console log what the results are
                             console.log("Success!" + firstName + " " + lastName + "has been added to the employee database")
+                            init()
                         });
                     })
             })
-        }).then(init())
+        })
 }
 
-//create an array and push into that array when you add employee and add role so you can pass that into prompt
+// function to update a role
 function updateRole() {
     employeeChoices().then(response => {
-        console.log(response[0])
+        //console.log(response[0])
         let empChoices = response[0].map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id })) //creates an array 
         inquirer
             .prompt([
@@ -270,7 +240,7 @@ function updateRole() {
 
             ])
             .then((answers) => {
-                console.log(answers)
+                //console.log(answers)
                 const employee = answers.employeeChosen
                 roleChoices().then(response => {
                     const rChoices = response[0].map(({ id, title }) => ({ name: title, value: id }))
@@ -283,11 +253,12 @@ function updateRole() {
                                 choices: rChoices
                             },
                         ]).then((answers) => {
-                            console.log(answers)
+                            //console.log(answers)
                             db.query("UPDATE employee SET role_id= ? WHERE id= ?", [answers.newRole, employee])
                             console.log("Success! Role has been updated.")
+                            init()
                         })
                 })
             })
-    }).then(init())
+    })
 }

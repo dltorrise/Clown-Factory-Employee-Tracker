@@ -214,7 +214,7 @@ function addEmployee() {
                     ]).then((answers) => {
                         //console.log(answers)
                         db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`, [firstName, lastName, answers.newRole, null], function (err, results) {
-                            console.log("Success!" + firstName + " " + lastName + "has been added to the employee database")
+                            console.log("Success! " + firstName + " " + lastName + " has been added to the employee database")
                             init()
                         });
                     })

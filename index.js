@@ -203,6 +203,7 @@ function addEmployee() {
             const lastName = answers.lastName
             roleChoices().then(response => {
                 const rChoices = response[0].map(({ id, title }) => ({ name: title, value: id }))
+                console.log(rChoices)
                 inquirer
                     .prompt([
                         {
@@ -212,9 +213,24 @@ function addEmployee() {
                             choices: rChoices
                         },
                     ]).then((answers) => {
+                        //create an array of managers
                         //console.log(answers)
-                        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`, [firstName, lastName, answers.newRole, null], function (err, results) {
-                            console.log("Success!" + firstName + " " + lastName + "has been added to the employee database")
+                        var managerID
+                        if(answers.newRole==='Cake Thrower' || answers.newRole==='Cake Thrower Intern') {
+                            managerID = 1
+                        } else if (answers.newRole==='Baloon Maker' || answers.newRole==='Baloon Maker Apprentice') {
+                            managerID = 4
+                        } else if (answers.newRole==='Tiny Car Mechanic' || answers.newRole==='Tiny Car Mechanic Intern') {
+                            managerID = 7
+                        } else if (answers.newRole==='Large Shoe Cobbler' || answers.newRole==='Large Shoe Cobbler Apprentice') {
+                            managerID = 10
+                        } else if (answers.newRole==='Boink Tester' || answers.newRole==='Boink Tester Trainee') {
+                            managerID = 13
+                        } else {
+                            managerID = null
+                        }
+                        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`, [firstName, lastName, answers.newRole, managerID], function (err, results) {
+                            console.log("Success! " + firstName + " " + lastName + " has been added to the employee database")
                             init()
                         });
                     })

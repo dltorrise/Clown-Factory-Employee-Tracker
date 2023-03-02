@@ -214,17 +214,17 @@ function addEmployee() {
                         },
                     ]).then((answers) => {
                         //create an array of managers
-                        //console.log(answers)
+                        console.log(answers.newRole)
                         var managerID
-                        if(answers.newRole==='Cake Thrower' || answers.newRole==='Cake Thrower Intern') {
+                        if (answers.newRole === 2 || answers.newRole === 3) {
                             managerID = 1
-                        } else if (answers.newRole==='Baloon Maker' || answers.newRole==='Baloon Maker Apprentice') {
+                        } else if (answers.newRole === '5' || answers.newRole==='6') {
                             managerID = 4
-                        } else if (answers.newRole==='Tiny Car Mechanic' || answers.newRole==='Tiny Car Mechanic Intern') {
+                        } else if (answers.newRole === '8' || answers.newRole === '9') {
                             managerID = 7
-                        } else if (answers.newRole==='Large Shoe Cobbler' || answers.newRole==='Large Shoe Cobbler Apprentice') {
+                        } else if (answers.newRole === '11' || answers.newRole === '12') {
                             managerID = 10
-                        } else if (answers.newRole==='Boink Tester' || answers.newRole==='Boink Tester Trainee') {
+                        } else if (answers.newRole === '14' || answers.newRole==='15') {
                             managerID = 13
                         } else {
                             managerID = null
